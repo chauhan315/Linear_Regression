@@ -1,6 +1,5 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler
 from sklearn.linear_model import LinearRegression
 import pickle
 
@@ -19,10 +18,6 @@ df.rename(columns={
 X = df.drop('Unit Price', axis=1, inplace=False)
 y = df['Unit Price']
 
-# scaling
-scaler = MinMaxScaler()
-X = scaler.fit_transform(X)
-
 # train test split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=47)
 
@@ -30,8 +25,10 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 lm = LinearRegression()
 lm.fit(X_train, y_train)
 
-with open("model.pkl", 'wb') as model_pickle:
-    pickle.dump(lm, model_pickle)
+with open("model.pkl", 'wb') as model_pkl:
+    pickle.dump(lm, model_pkl)
 
-with open('scaler.pkl', 'wb') as scaler_picker:
-    pickle.dump(scaler, scaler_picker)
+print(lm.predict([[1234, 4567]]))
+print(lm.predict([[125, 456]]))
+
+model = lm
